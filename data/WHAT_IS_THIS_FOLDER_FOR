@@ -1,0 +1,5 @@
+This folder contains the log files from the cron script.
+
+It is populated automatically when the cron script runs.
+
+The front end visualises the output of the data in this file.
