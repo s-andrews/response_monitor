@@ -60,7 +60,7 @@ server <- function(input, output) {
           ggplot2::theme_bw(base_size=15) +
           ggplot2::scale_colour_manual(values=c(`200` = "green3", FAIL="red2", `404`="blue2", `500`="red2")) +
           ggplot2::ylab("Reponse time (seconds)") +
-          ggplot2::facet_grid(cols=ggplot2::vars(as.factor(Date))) +
+          ggplot2::facet_wrap(ggplot2::vars(as.factor(Date)), ncol = 7) +
           ggplot2::theme(panel.spacing.x = ggplot2::unit(0,"lines")) +
           ggplot2::coord_cartesian(ylim=c(0,30))
       )
@@ -79,11 +79,11 @@ server <- function(input, output) {
       }
       
       if (input$duration == "A week") {
-        return(load_data() |> dplyr::filter(Date<=input$date, Date>=input$date-7))
+        return(load_data() |> dplyr::filter(Date<=input$date, Date>=input$date-6))
       }
       
       if (input$duration == "A month") {
-        return(load_data() |> dplyr::filter(Date<=input$date, Date>=input$date-30))
+        return(load_data() |> dplyr::filter(Date<=input$date, Date>=input$date-27))
       }
       
             
