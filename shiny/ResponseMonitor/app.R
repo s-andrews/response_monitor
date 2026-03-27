@@ -26,7 +26,7 @@ ui <- page_sidebar(
     radioButtons(
       inputId = "duration",
       label="Over How Long",
-      choices = c("A day","A week","A month","A year")
+      choices = c("A day","A week","A month")
     ),
     
     dateInput(
@@ -34,7 +34,6 @@ ui <- page_sidebar(
       label = "To Which Date",
       value=Sys.Date()
     )
-    
     
   ),
   
@@ -64,7 +63,26 @@ server <- function(input, output) {
       input$url_choice
     })
     
+    
     get_data <- reactive({
+      
+      if (input$duration == "A day") {
+        return(load_data() |> dplyr::filter(Date==input$date))
+      }
+      
+      if (input$duration == "A week") {
+        return(load_data() |> dplyr::filter(Date<=input$date, Date>=input$date-7))
+      }
+      
+      if (input$duration == "A month") {
+        return(load_data() |> dplyr::filter(Date<=input$date, Date>=input$date-30))
+      }
+      
+            
+    })
+    
+    
+    load_data <- reactive({
       stringr::str_replace_all(input$url_choice,"/","_") -> file_name
       readr::read_delim(
         paste0("../../data/",file_name), 
