@@ -1,5 +1,6 @@
 library(shiny)
 library(bslib)
+library(plotly)
 
 # Define UI for application that draws a histogram
 
@@ -37,33 +38,39 @@ ui <- page_sidebar(
     
   ),
   
-  plotOutput(outputId="response_plot")
+  h1(
+    textOutput("graph_header"),
+    class="text-center",
+     style="width:100%"
+  ),
+  
+  plotlyOutput(outputId="response_plot")
     
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-    output$response_plot <- renderPlot({
-      
-      get_data() |>
-        ggplot2::ggplot(ggplot2::aes(x=Time,y=Response/1000,colour=Code)) +
-        ggplot2::geom_point() +
-        ggplot2::theme_bw(base_size=20) +
-        ggplot2::scale_colour_manual(values=c(`200` = "green3", FAIL="red2", `404`="blue2", `500`="red2")) +
-        ggplot2::ggtitle(get_title()) +
-        ggplot2::ylab("Reponse time (seconds)") +
-        ggplot2::facet_grid(cols=ggplot2::vars(Date)) +
-        ggplot2::theme(panel.spacing.x = ggplot2::unit(0,"lines")) +
-        ggplot2::coord_cartesian(ylim=c(0,30))
-      
+    output$response_plot <- renderPlotly({
+
+      ggplotly(
+        get_data() |>
+          ggplot2::ggplot(ggplot2::aes(x=Time,y=Response,colour=Code)) +
+          ggplot2::geom_point() +
+          ggplot2::theme_bw(base_size=15) +
+          ggplot2::scale_colour_manual(values=c(`200` = "green3", FAIL="red2", `404`="blue2", `500`="red2")) +
+          ggplot2::ylab("Reponse time (seconds)") +
+          ggplot2::facet_grid(cols=ggplot2::vars(as.factor(Date))) +
+          ggplot2::theme(panel.spacing.x = ggplot2::unit(0,"lines")) +
+          ggplot2::coord_cartesian(ylim=c(0,30))
+      )
     })
-    
     
     get_title <- reactive({
       input$url_choice
     })
     
+    output$graph_header <- renderText({get_title()})
     
     get_data <- reactive({
       
@@ -90,7 +97,9 @@ server <- function(input, output) {
         col_names=c("Date","Time","Code","Response"),
         col_types="??cn"
       ) |>
-        dplyr::mutate(Response=replace(Response,Response>30000,30000))
+        dplyr::mutate(
+          Response=round(replace(Response/1000,Response>30000,30),2)
+        )
     })
     
 }
