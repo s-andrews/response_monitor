@@ -5,7 +5,9 @@ library(plotly)
 # Define UI for application that draws a histogram
 
 readr::read_tsv("../../cron/site_list.txt",col_names = "site") |>
-  dplyr::pull(site) -> sites
+  dplyr::pull(site) |>
+  stringr::str_replace("\\s.*","")-> sites
+  
 
 ui <- page_sidebar(
   
