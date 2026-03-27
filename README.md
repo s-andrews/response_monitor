@@ -32,7 +32,15 @@ The system expects the following dependencies to be present.
   
 ### System Configuration
 
-To set up the sites to monitor you need to edit the ```cron/site_list.txt``` file.  Put one URL (without the https:// prefix) per line into this file for all sites you want to monitor.
+To set up the sites to monitor you need to edit the ```cron/site_list.txt``` file.  
+Put one URL (without the https:// prefix) per line into this file for all sites you want to monitor.
+
+If you would like to have people alerted if a site becomes unresponsive then you can add as many emails as you want
+after the url.  Any site not responding within 30 seconds, or which returned an HTTP status code other than 200 will
+trigger an email warning to those addresses.
+
+The email is send to a mail server running on localhost so you will need to have that configured.  If there is an extended
+outage on a site it will send one email per hour until the site returns.
 
 
 ### Cron setup
