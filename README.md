@@ -2,7 +2,7 @@
 
 A system to monitor and review the response times of multiple websites.
 
-![Screenshot]("https://raw.githubusercontent.com/s-andrews/response_monitor/refs/heads/main/response_monitor_screenshot.png")
+![Screenshot](https://raw.githubusercontent.com/s-andrews/response_monitor/refs/heads/main/response_monitor_screenshot.png)
 
 
 Response Monitor is a system into which you can enter an arbitrary number of website URLs which it will then monitor for their response times to a simple GET request.
