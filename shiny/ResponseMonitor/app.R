@@ -47,14 +47,15 @@ server <- function(input, output) {
     output$response_plot <- renderPlot({
       
       get_data() |>
-        ggplot2::ggplot(ggplot2::aes(x=Time,y=Response,colour=Code)) +
+        ggplot2::ggplot(ggplot2::aes(x=Time,y=Response/1000,colour=Code)) +
         ggplot2::geom_point() +
         ggplot2::theme_bw(base_size=20) +
         ggplot2::scale_colour_manual(values=c(`200` = "green3", FAIL="red2", `404`="blue2", `500`="red2")) +
         ggplot2::ggtitle(get_title()) +
+        ggplot2::ylab("Reponse time (seconds)") +
         ggplot2::facet_grid(cols=ggplot2::vars(Date)) +
         ggplot2::theme(panel.spacing.x = ggplot2::unit(0,"lines")) +
-        ggplot2::coord_cartesian(ylim=c(0,30000))
+        ggplot2::coord_cartesian(ylim=c(0,30))
       
     })
     
