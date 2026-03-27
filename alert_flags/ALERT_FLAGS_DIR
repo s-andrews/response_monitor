@@ -1,0 +1,3 @@
+This directory will hold empty files which notify that an email alert has been sent to the people configured to receive it.
+
+The timestamp on the file is used to ensure that we don't send repeated emails if a site is down for an extended period
