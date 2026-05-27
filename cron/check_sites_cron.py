@@ -60,20 +60,20 @@ def read_sites():
 
 
 def send_email(site,status):
-    
+
     # Check if we're alerting for this site
     if not site[1]:
         return
 
 
     # Check if we've already sent an alert recently
-    flag_file = site[0].replace("/","_")    
+    flag_file = site[0].replace("/","_")
     flag_path = Path(__file__).parent.parent / "alert_flags" / flag_file
 
     if flag_path.exists():
         # Check if the modified time is in the last hour
         modified_time = datetime.fromtimestamp(flag_path.stat().st_mtime)
-    
+
         if datetime.now() - modified_time < timedelta(hours=1):
             # We sent something within the last hour
             return
@@ -98,7 +98,7 @@ def send_email(site,status):
     smtp = SMTP()
     smtp.connect("localhost",port)
 
-    smtp.sendmail(from_addr="contact@biotrain.tv",to_addrs=site[1], msg=msg.as_string())
+    smtp.sendmail(from_addr="babraham.bioinformatics@babraham.ac.uk",to_addrs=site[1], msg=msg.as_string())
 
 
 if __name__ == "__main__":
